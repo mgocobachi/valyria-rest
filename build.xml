@@ -1,0 +1,78 @@
+<project name="Valyria" default="develop" basedir=".">
+    <property file="${project.basedir}/build/ci/resources/build.properties"/>
+    <target name="develop" depends="composer, run-all-tests"/>
+    <target name="run-all-tests">
+        <exec
+                command="${zend.phpunit.exec} --configuration ${dir.tests}"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+    </target>
+    <target name="composer">
+        <exec
+                command="composer --no-interaction update"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+
+    </target>
+    <target name="publish-vendor">
+        <exec
+                command="php artisan vendor:publish"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+    </target>
+    <target name="db-install">
+        <exec
+                command="php artisan migrate"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+        <exec
+                command="php artisan db:seed"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+    </target>
+    <target name="db-refresh">
+        <exec
+                command="php artisan migrate:refresh"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+        <exec
+                command="php artisan db:seed"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+        <exec
+                command="php artisan cache:clear"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+        <exec
+                command="php artisan route:clear"
+                passthru="true"
+                output="/dev/stdout"
+                error="/dev/stdout"
+                checkreturn="true"
+                />
+    </target>
+</project>

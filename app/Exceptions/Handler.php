@@ -1,0 +1,57 @@
+<?php namespace Valyria\Exceptions;
+
+use Exception;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
+
+class Handler extends ExceptionHandler
+{
+
+    /**
+     * A list of the exception types that should not be reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [
+        'Symfony\Component\HttpKernel\Exception\HttpException'
+    ];
+
+    /**
+     * Report or log an exception.
+     *
+     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     *
+     * @param  \Exception $e
+     * @return void
+     */
+    public function report(Exception $e)
+    {
+        return parent::report($e);
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Exception $e
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Exception $e)
+    {
+        $result = array(
+            'stat'   => 'error',
+            'result' => 'Internal Server Error',
+        );
+
+        if (env('APP_DEBUG')) {
+            $result['result'] = $e->getMessage();
+        }
+
+        if ($e instanceof \PDOException) {
+            $result['result'] = 'the data is unavailable';
+        }
+
+        return response()->json($result, Response::HTTP_BAD_REQUEST);
+        //return parent::render($request, $e);
+    }
+}

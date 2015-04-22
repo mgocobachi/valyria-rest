@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Valyria
+        psr4_prefix: Valyria
+        src_path: app
