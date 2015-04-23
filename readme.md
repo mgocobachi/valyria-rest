@@ -7,6 +7,7 @@
     php 5.4+
     phing
     composer
+    MySQL 5+
 
 ## How to install it
 
@@ -17,7 +18,8 @@
 
     phing db-refresh
 
-Resources:
+Routes of resources:
+
     php artisan route:list
 
 Basically, this is our routes (application/json, except for image):
